@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+
+  authentication:
+    image: authentication
+    environment:
+      - DATABASE_URL=authenticationDB
+    ports:
+      - 5002:5002
+    networks:
+      - mynet
+
+
+networks:
+  mynet:
+
+  mynet1:

@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+
+  ganacheContainer:
+    image: trufflesuite/ganache-cli
+    ports:
+      - 8545:8545
+    networks:
+      - mynet1
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "localhost", "8545" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+networks:
+  mynet:
+
+  mynet1:

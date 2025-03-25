@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+
+  courierApplication:
+    image: courierapplication
+    environment:
+      - DATABASE_URL=productsDB
+    ports:
+      - 5005:5005
+    networks:
+      - mynet1
+
+
+
+networks:
+  mynet:
+
+  mynet1:

@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+
+  productsDB:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      timeout: 10s
+      retries: 10
+    ports:
+      - 3307:3306
+    networks:
+      - mynet1
+
+  productsDBMigration:
+    image: productsdbmigration
+    environment:
+      - DATABASE_URL=productsDB
+    depends_on:
+      productsDB:
+        condition: service_healthy
+    networks:
+      - mynet1
+
+
+networks:
+  mynet:
+
+  mynet1:

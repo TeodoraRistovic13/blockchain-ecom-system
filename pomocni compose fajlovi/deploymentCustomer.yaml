@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+
+  customerApplication:
+    image: customerapplication
+    environment:
+      - DATABASE_URL=productsDB
+    ports:
+      - 5004:5004
+    networks:
+      - mynet1
+
+
+
+networks:
+  mynet:
+
+  mynet1:

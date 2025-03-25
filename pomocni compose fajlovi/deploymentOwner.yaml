@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+
+#  ownerApplication:
+#    image: ownerapplication
+#    environment:
+#      - DATABASE_URL=productsDB
+#    ports:
+#      - 5003:5003
+#    networks:
+#      - mynet1
+#    volumes:
+#      - ./sparkData:/data
+
+  ownerApplication:
+    build:
+      context: ./application
+      dockerfile: ownerApplication.dockerfile
+    image: ownerapplication
+    environment:
+      - DATABASE_URL=productsDB
+    ports:
+      - 5003:5003
+    networks:
+      - mynet1
+
+networks:
+  mynet1:

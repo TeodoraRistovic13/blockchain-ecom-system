@@ -1,0 +1,109 @@
+version: '3'
+
+services:
+  authenticationDB:
+    image: mysql
+    environment:
+       - MYSQL_ROOT_PASSWORD=root
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 10
+    ports:
+      - 3306:3306
+    networks:
+      - mynet
+
+
+
+  authenticationDBMigration:
+    image: authenticationdbmigration
+    environment:
+      - DATABASE_URL=authenticationDB
+    depends_on:
+      authenticationDB:
+        condition: service_healthy
+    networks:
+      - mynet
+
+  authentication:
+    image: authentication
+    environment:
+      - DATABASE_URL=authenticationDB
+    depends_on:
+      - authenticationDBMigration
+    ports:
+      - 5002:5002
+    networks:
+      - mynet
+
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
+    networks:
+      - mynet
+      - mynet1
+
+  productsDB:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      timeout: 10s
+      retries: 10
+    ports:
+      - 3307:3306
+    networks:
+      - mynet1
+
+  productsDBMigration:
+    image: productsdbmigration
+    environment:
+      - DATABASE_URL=productsDB
+    depends_on:
+      productsDB:
+        condition: service_healthy
+    networks:
+      - mynet1
+
+  ownerApplication:
+    image: ownerapplication
+    environment:
+      - DATABASE_URL=productsDB
+    depends_on:
+      - productsDBMigration
+    ports:
+      - 5003:5003
+    networks:
+      - mynet1
+
+  customerApplication:
+    image: customerapplication
+    environment:
+      - DATABASE_URL=productsDB
+    depends_on:
+      - productsDBMigration
+    ports:
+      - 5004:5004
+    networks:
+      - mynet1
+
+  courierApplication:
+    image: courierapplication
+    environment:
+      - DATABASE_URL=productsDB
+    depends_on:
+      - productsDBMigration
+    ports:
+      - 5005:5005
+    networks:
+      - mynet1
+
+
+
+networks:
+  mynet:
+
+  mynet1:
