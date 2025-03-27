@@ -41,7 +41,6 @@ contract OrderContract {
     }
 
     function acceptOrder(address payable _courier) public onlyInState(State.PAID) {
-
         require(courier == address(0), "Order already assigned to a courier");
         courier = _courier;
         state = State.DELIVERED;
